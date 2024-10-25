@@ -1,0 +1,47 @@
+---
+- name: 'Create sonda conf folder'
+  file:
+    dest: '{{ nim_waku_sonda_cont_vol }}'
+    state: 'directory'
+    owner: dockremap
+    group: docker
+    mode: 0775
+
+- name: Download sonda dockerfile and script from github repository
+  get_url:
+    url: '{{ nim_waku_sonda_github_url_path }}/{{ item.key }}'
+    dest: '{{ nim_waku_sonda_cont_vol }}/{{ item.key }}'
+    checksum: 'sha256:{{ item.value }}'
+  with_items:
+    - { key: 'Dockerfile.sonda', value: '{{ nim_waku_sonda_dockerfile_sha256   }}' }
+    - { key: 'sonda.py',         value: '{{ nim_waku_sonda_script_sonda_sha256 }}' }
+
+# We need to services data from Consul in order to have store nodes value with peer ID
+- name: Fetch services data
+  uri:
+    url: '{{ nim_waku_consul_services_catalog_url }}'
+    method: GET
+    return_content: yes
+    status_code: 200
+  register: services_data
+
+- name: Parse services JSON and select store nodes within fleet and DC
+  set_fact:
+    sonda_store_nodes: "{{ services_data.json | json_query(query) | flatten | join(',') }}"
+  vars:
+    query: |
+      [?ServiceName=='nim-waku' && 
+      Datacenter=='{{ nim_waku_dns4_domain_name.split('.')[1] }}' && 
+      NodeMeta.stage=='{{ stage }}' && NodeMeta.env=='{{ env }}' && 
+      starts_with(Node, 'store')].[ServiceMeta.multiaddr]
+
+- name: Create Sonda compose file and environment file
+  template:
+    src:   '{{ item }}.j2'
+    dest:  '{{ nim_waku_sonda_cont_vol }}/{{ item }}'
+    owner: 'dockremap'
+    group: 'docker'
+    mode:  0644
+  with_items:
+    - 'docker-compose.yml'
+    - 'sonda.env'
