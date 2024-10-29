@@ -1,0 +1,25 @@
+---
+nim_waku_sonda_cont_name: 'sonda'
+nim_waku_sonda_cont_vol: '/docker/{{ nim_waku_sonda_cont_name }}'
+nim_waku_sonda_service_name: 'nim-waku-sonda'
+nim_waku_sonda_git_commit_sha: '02c8f35d9e52f39b4a7d3780df7d0ab6676c5944'
+nim_waku_sonda_github_url_path: 'https://raw.githubusercontent.com/waku-org/nwaku/{{ nim_waku_sonda_git_commit_sha }}/apps/sonda'
+nim_waku_sonda_dockerfile_sha256: '3479d8061b6a4eaa1749c54c91503e229402537a37e983ef0ecc9fef74b50ead'
+nim_waku_sonda_script_sonda_sha256: 'd7ef04ebf133614b6b1d2a65ab8fd4f8e795227dfac09675381b94abc005542e'
+nim_waku_consul_services_catalog_url: 'http://127.0.0.1:8500/v1/catalog/service/nim-waku'
+
+# Configuration
+nim_waku_sonda_metrics_port: 8004
+nim_waku_sonda_query_delay: 60
+nim_waku_sonda_health_threshold: 5
+nim_waku_cont_rest_port: 8645
+# The following variables are from the waku node which will be running on host with sonda.
+# They should be forwarded from the caller of this role.
+#nim_waku_node_rest_address: ~
+#nim_waku_pubsub_topics: ~
+#nim_waku_cluster_id: ~
+
+# Container healthcheck
+healthcheck_interval: 30s
+healthcheck_timeout: 10s 
+healthcheck_retries: 3  

@@ -1,0 +1,19 @@
+# The healthcheck is done on only endpoint which doesn't return metrics
+# https://prometheus.github.io/client_python/exporting/http/#supported-http-methods
+- name: Create Consul service definition
+  include_role: name=infra-role-consul-service
+  vars:
+    consul_config_name: '{{ nim_waku_sonda_service_name }}'
+    consul_services:
+      - id:      '{{ nim_waku_sonda_service_name     }}'
+        name:    '{{ nim_waku_sonda_service_name     }}'
+        port:    '{{ nim_waku_sonda_metrics_port     }}'
+        address: '{{ ansible_local.wireguard.address }}'
+        tags: ['sonda', 'metrics', 'nim-waku']
+        meta:
+          container: '{{ nim_waku_sonda_cont_name }}'
+        checks:
+          - id: '{{ nim_waku_sonda_service_name }}-health'
+            name: 'Sonda Service Healthcheck'
+            type: 'http'
+            http: 'http://localhost:{{ nim_waku_sonda_metrics_port }}/favicon.ico'
