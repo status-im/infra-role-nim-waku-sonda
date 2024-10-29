@@ -1,0 +1,7 @@
+---
+- name: 'Create container: {{ nim_waku_sonda_cont_name }}'
+  community.docker.docker_compose_v2:
+    project_src: '{{ nim_waku_sonda_cont_vol }}'
+    build: 'always'
+    pull: 'never'
+    state: '{{ "present" }}'

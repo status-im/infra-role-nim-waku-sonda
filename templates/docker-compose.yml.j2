@@ -1,0 +1,15 @@
+---
+services:
+  sonda:
+    container_name: '{{ nim_waku_sonda_cont_name }}'
+    build:
+      context: .
+      dockerfile: Dockerfile.sonda
+    ports:
+      - {{ nim_waku_sonda_metrics_port }}:{{ nim_waku_sonda_metrics_port }}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://0.0.0.0:{{ nim_waku_sonda_metrics_port }}/favicon.ico"]
+      interval: {{ healthcheck_interval }}
+      timeout: {{ healthcheck_timeout }} 
+      retries: {{ healthcheck_retries }}  
+    env_file: "sonda.env"
