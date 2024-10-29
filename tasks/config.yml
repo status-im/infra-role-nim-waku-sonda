@@ -19,7 +19,7 @@
 # We need to services data from Consul in order to have store nodes value with peer ID
 - name: Fetch services data
   uri:
-    url: '{{ nim_waku_consul_services_catalog_url }}'
+    url: '{{ nim_waku_sonda_consul_services_catalog_url }}'
     method: GET
     return_content: yes
     status_code: 200
@@ -27,7 +27,7 @@
 
 - name: Parse services JSON and select store nodes within fleet and DC
   set_fact:
-    sonda_store_nodes: "{{ services_data.json | json_query(query) | flatten | join(',') }}"
+    nim_waku_sonda_store_nodes: "{{ services_data.json | json_query(query) | flatten | join(',') }}"
   vars:
     query: |
       [?ServiceName=='nim-waku' && 

@@ -13,3 +13,13 @@ services:
       timeout: {{ healthcheck_timeout }} 
       retries: {{ healthcheck_retries }}  
     env_file: "sonda.env"
+{% if nim_waku_sonda_cont_network %}
+    networks:
+      - '{{ nim_waku_sonda_cont_network }}'
+{% endif %}
+
+networks:
+{% if nim_waku_sonda_cont_network %}
+  {{ nim_waku_sonda_cont_network }}:
+    external: true
+{% endif %}
