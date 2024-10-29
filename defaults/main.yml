@@ -18,6 +18,7 @@ nim_waku_cont_rest_port: 8645
 #nim_waku_node_rest_address: ~
 #nim_waku_pubsub_topics: ~
 #nim_waku_cluster_id: ~
+#nim_waku_cont_network:~
 
 # Container healthcheck
 healthcheck_interval: 30s
