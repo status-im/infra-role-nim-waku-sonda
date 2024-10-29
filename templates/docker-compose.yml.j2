@@ -13,3 +13,6 @@ services:
       timeout: {{ healthcheck_timeout }} 
       retries: {{ healthcheck_retries }}  
     env_file: "sonda.env"
+    # Sonda needs hostname to query the nim-waku-node container REST API port
+    extra_hosts:
+      - '{{ inventory_hostname }}:{{ ansible_local.wireguard.address }}'
