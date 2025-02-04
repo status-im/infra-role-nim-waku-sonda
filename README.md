@@ -23,7 +23,7 @@ nim_waku_sonda_fleets_url:      'https://fleets.status.im/'                     
 nim_waku_cont_rest_port:        8645                                                                             # Nim waku node rest port
 
 # Required variables from waku node configuration
-# nim_waku_pubsub_topics: ~                     # Topics used by Waku pubsub
+# nim_waku_shard: ~                     # Topics used by Waku shard
 # nim_waku_cont_name: ~                         # Waku container name
 # nim_waku_cluster_id: ~                        # Cluster ID for Waku network
 ```

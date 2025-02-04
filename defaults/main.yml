@@ -15,7 +15,7 @@ nim_waku_sonda_health_threshold: 5
 # The following variables are from the waku node which will be running on host with sonda.
 # They should be forwarded from the caller of this role.
 #nim_waku_sonda_node_rest_address: ~
-#nim_waku_sonda_pubsub_topics: ~
+#nim_waku_sonda_shard: ~
 #nim_waku_sonda_cluster_id: ~
 #nim_waku_sonda_cont_network: ~
 
